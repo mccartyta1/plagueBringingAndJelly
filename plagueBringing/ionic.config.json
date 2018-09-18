@@ -1,0 +1,7 @@
+{
+  "name": "plagueBringing",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
