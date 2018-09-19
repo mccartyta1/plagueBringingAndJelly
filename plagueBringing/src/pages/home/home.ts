@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -9,7 +9,7 @@ export class HomePage {
 
   groceries: any;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
 
       this.groceries = [
           'Bread',
@@ -27,5 +27,28 @@ export class HomePage {
       ];
 
   }
+
+  addNote(){
+
+    let prompt = this.alertCtrl.create({
+        title: 'Add Note',
+        inputs: [{
+            name: 'title'
+        }],
+        buttons: [
+            {
+                text: 'Cancel'
+            },
+            {
+                text: 'Add',
+                handler: data => {
+                    this.groceries.push(data);
+                }
+            }
+        ]
+    });
+
+    prompt.present();
+}
 
 }
