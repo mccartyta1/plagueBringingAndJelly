@@ -31,10 +31,12 @@ export class HomePage {
   addNote(){
 
     let prompt = this.alertCtrl.create({
-        title: 'Add Note',
+        title: 'Add Food',
+        message: "Enter the food's name and calories!",
         inputs: [{
-            name: 'title'
-        }],
+            name: 'name',
+            placeholder: "Hamburger"
+        }, { name: 'calories', placeholder: "9001", type: "number"}],
         buttons: [
             {
                 text: 'Cancel'
@@ -42,7 +44,7 @@ export class HomePage {
             {
                 text: 'Add',
                 handler: data => {
-                    this.groceries.push(data);
+                    this.groceries.push(data.name + " - " + data.calories);
                 }
             }
         ]
