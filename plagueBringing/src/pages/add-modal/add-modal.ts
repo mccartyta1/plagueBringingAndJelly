@@ -15,10 +15,10 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class AddModalPage {
 
-  userProvidedData: string;
+  userProvidedData = { type: "Type", value: "Value"};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
-    this.userProvidedData = "dsf";
+    this.userProvidedData.type = "";
   }
 
   ionViewDidLoad() {
@@ -27,6 +27,14 @@ export class AddModalPage {
 
   closeModal() {
     this.viewCtrl.dismiss(this.userProvidedData);
+  }
+
+  optionsFn(type: any) {
+    this.userProvidedData.type = type;
+  }
+
+  numberTextChanged(value: any) {
+    this.userProvidedData.value = value;
   }
 
 }

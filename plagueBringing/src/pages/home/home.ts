@@ -11,6 +11,7 @@ export class HomePage {
 
   groceries: any;
   goals: any;
+  goalTypes: any;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController) {
       this.groceries = [
@@ -21,12 +22,8 @@ export class HomePage {
           'Squirrel'
       ];
 
-      this.goals = [
-        2000,
-        0,
-        0,
-        0
-      ];
+      this.goals = [];
+      goalTypes: ["Calories", "Protein", "Fat", "Carbs", "Sugar" ];
   }
 
   addNote(){
@@ -58,7 +55,9 @@ addGoal(){
   myModal.present(myModal);
 
   myModal.onDidDismiss(data => {
-    this.goals.push(data.userName);
+    if (data != "") {
+      this.goals.push(this.goalTypes[data.type] + " : " + data.value);
+    }
   });
 }
 
