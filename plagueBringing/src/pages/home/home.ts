@@ -23,7 +23,7 @@ export class HomePage {
       ];
 
       this.goals = [];
-      goalTypes: ["Calories", "Protein", "Fat", "Carbs", "Sugar" ];
+      this.goalTypes = ["Calories", "Protein", "Fat", "Carbs", "Sugar" ];
   }
 
   addNote(){
@@ -52,10 +52,10 @@ export class HomePage {
 
 addGoal(){
   let myModal = this.modalCtrl.create(AddModalPage);
-  myModal.present(myModal);
+  myModal.present();
 
   myModal.onDidDismiss(data => {
-    if (data != "") {
+    if (data.type >= 0) {
       this.goals.push(this.goalTypes[data.type] + " : " + data.value);
     }
   });

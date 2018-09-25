@@ -15,10 +15,10 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class AddModalPage {
 
-  userProvidedData = { type: "Type", value: "Value"};
+  userProvidedData = { type: 0, value: 0};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
-    this.userProvidedData.type = "";
+    this.userProvidedData.type = -1;
   }
 
   ionViewDidLoad() {
