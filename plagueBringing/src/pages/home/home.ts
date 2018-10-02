@@ -15,11 +15,11 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController) {
       this.groceries = [
-          "The Ol' Turkey",
-          'Big Boy Glass of Milk',
-          'Half Pound of Sausage',
-          'Bowl of Captain Crunch',
-          'Squirrel'
+          {name: "The Ol' Turkey", calories: 4000},
+          {name: "Glass of Milk", calories: 200},
+          {name: "Fried Squirrel", calories: 600},
+          {name: "Glass of Milk", calories: 200},
+          {name: "Boiled Squirrel", calories: 600}
       ];
 
       this.goals = [];
@@ -33,7 +33,7 @@ export class HomePage {
         inputs: [{
             name: 'name',
             placeholder: "Hamburger"
-        }, { name: 'calories', placeholder: "9001", type: "number"}],
+        }, { name: 'calories', placeholder: '100', type: "number"}],
         buttons: [
             {
                 text: 'Cancel'
@@ -41,7 +41,7 @@ export class HomePage {
             {
                 text: 'Add',
                 handler: data => {
-                    this.groceries.push(data.name + " - " + data.calories);
+                    this.groceries.push({name: data.name, calories: +data.calories});
                 }
             }
         ]
@@ -59,6 +59,14 @@ addGoal(){
       this.goals.push(this.goalTypes[data.type] + " : " + data.value);
     }
   });
+}
+
+caloriesForDay() {
+  var sum = 0;
+  for (let entry of this.groceries) {
+    sum += entry.calories;
+  }
+  return sum;
 }
 
 }
