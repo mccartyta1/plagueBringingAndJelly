@@ -11,6 +11,7 @@ export class HomePage {
 
   groceries: any;
   goals: any;
+  restrictions: any;
   goalTypes: any;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController) {
@@ -22,8 +23,9 @@ export class HomePage {
           {name: "Boiled Squirrel", calories: 600}
       ];
 
-      this.goals = [];
-      this.goalTypes = ["Calories", "Protein", "Fat", "Carbs", "Sugar" ];
+      this.goals = {calories: 2000};
+      this.restrictions = {calories: 6000};
+      this.goalTypes = ["calories", "protein", "fat", "carbs", "sugar" ];
   }
 
   addNote(){
@@ -56,17 +58,46 @@ addGoal(){
 
   myModal.onDidDismiss(data => {
     if (data.type >= 0) {
-      this.goals.push(this.goalTypes[data.type] + " : " + data.value);
+      switch(data.type) {
+        case 0: this.goals.calories = data.value;
+      }
     }
   });
 }
 
-caloriesForDay() {
+getSumOfNutrient(nutrient: String) {
   var sum = 0;
   for (let entry of this.groceries) {
-    sum += entry.calories;
+    sum += entry[nutrient];
   }
   return sum;
+}
+
+caloriesForDay() {
+  return this.getSumOfNutrient("calories");
+}
+
+metGoals() {
+  var goalsMet = 0;
+  for (let entry of this.goalTypes) {
+    if (this.getSumOfNutrient(entry) > this.goals[entry] ) goalsMet++
+  }
+  return goalsMet;
+}
+
+metRestrictions() {
+  var sumCal = this.caloriesForDay();
+  var restrictionsMet = 0;
+  if (sumCal < this.restrictions.calories) restrictionsMet++;
+  return restrictionsMet;
+}
+
+getTotalGoals() {
+  return Object.keys(this.goals).length;
+}
+
+getTotalRestrictions() {
+  return Object.keys(this.restrictions).length;
 }
 
 }
