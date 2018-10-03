@@ -16,8 +16,8 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController) {
       this.groceries = [
-          {name: "The Ol' Turkey", calories: 4000},
-          {name: "Glass of Milk", calories: 200},
+          {name: "The Ol' Turkey", calories: 4000, protein: 15},
+          {name: "Glass of Milk", calories: 200, sugar: 20},
           {name: "Fried Squirrel", calories: 600},
           {name: "Glass of Milk", calories: 200},
           {name: "Boiled Squirrel", calories: 600}
@@ -58,9 +58,7 @@ addGoal(){
 
   myModal.onDidDismiss(data => {
     if (data.type >= 0) {
-      switch(data.type) {
-        case 0: this.goals.calories = data.value;
-      }
+      this.goals[data.type] = data.value;
     }
   });
 }
@@ -68,6 +66,7 @@ addGoal(){
 getSumOfNutrient(nutrient: String) {
   var sum = 0;
   for (let entry of this.groceries) {
+    if (!(nutrient in entry)) continue;
     sum += entry[nutrient];
   }
   return sum;
@@ -80,16 +79,21 @@ caloriesForDay() {
 metGoals() {
   var goalsMet = 0;
   for (let entry of this.goalTypes) {
-    if (this.getSumOfNutrient(entry) > this.goals[entry] ) goalsMet++
+    if (!(entry in this.goals)) continue;
+    console.log(entry);
+    if (this.getSumOfNutrient(entry) >= this.goals[entry] ) goalsMet++
   }
   return goalsMet;
 }
 
 metRestrictions() {
-  var sumCal = this.caloriesForDay();
-  var restrictionsMet = 0;
-  if (sumCal < this.restrictions.calories) restrictionsMet++;
-  return restrictionsMet;
+  var goalsMet = 0;
+  for (let entry of this.goalTypes) {
+    if (!(entry in this.restrictions)) continue;
+    console.log(entry);
+    if (this.getSumOfNutrient(entry) <= this.restrictions[entry] ) goalsMet++
+  }
+  return goalsMet;
 }
 
 getTotalGoals() {
