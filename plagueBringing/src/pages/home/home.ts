@@ -52,15 +52,26 @@ export class HomePage {
     prompt.present();
 }
 
-addGoal(){
+addModal(isGoal: boolean) {
   let myModal = this.modalCtrl.create(AddModalPage);
   myModal.present();
 
   myModal.onDidDismiss(data => {
     if (data.type >= 0) {
-      this.goals[data.type] = data.value;
+      if (isGoal) {
+        this.goals[this.goalTypes[data.type]] = data.value;
+      } else {
+        this.restrictions[this.goalTypes[data.type]] = data.value;
+      }
     }
   });
+}
+addGoal(){
+  this.addModal(true);
+}
+
+addRestriction() {
+  this.addModal(false);
 }
 
 getSumOfNutrient(nutrient: String) {
@@ -80,7 +91,6 @@ metGoals() {
   var goalsMet = 0;
   for (let entry of this.goalTypes) {
     if (!(entry in this.goals)) continue;
-    console.log(entry);
     if (this.getSumOfNutrient(entry) >= this.goals[entry] ) goalsMet++
   }
   return goalsMet;
@@ -90,13 +100,13 @@ metRestrictions() {
   var goalsMet = 0;
   for (let entry of this.goalTypes) {
     if (!(entry in this.restrictions)) continue;
-    console.log(entry);
     if (this.getSumOfNutrient(entry) <= this.restrictions[entry] ) goalsMet++
   }
   return goalsMet;
 }
 
 getTotalGoals() {
+  console.log(this.goals);
   return Object.keys(this.goals).length;
 }
 
