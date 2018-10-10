@@ -15,7 +15,9 @@
 <ion-content>
 
     <ion-list>
-        <ion-item *ngFor="let grocery of groceries">{{grocery.name}}, Calories: {{grocery.calories}}</ion-item>
+        <ion-item *ngFor="let grocery of groceries">
+        {{getFoodDisplayForFood(grocery)}}
+        </ion-item>
     </ion-list>
 
     <ion-menu [content]="mycontent">
@@ -44,8 +46,8 @@
 <ion-footer>
   <ion-toolbar>
     <ion-title>
-      <ion-item>Goals: {{metGoals()}} / {{getTotalGoals()}} - Restrictions: {{metRestrictions()}} / {{getTotalRestrictions()}} </ion-item>
-      <ion-item>Calories: {{caloriesForDay()}}</ion-item>
+      <ion-item left>Calories: {{caloriesForDay()}}</ion-item>
+      <ion-item right>Goals: {{metGoals()}} / {{getTotalGoals()}} - Restrictions: {{metRestrictions()}} / {{getTotalRestrictions()}} </ion-item>
     </ion-title>
   </ion-toolbar>
 </ion-footer>

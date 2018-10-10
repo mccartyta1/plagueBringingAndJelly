@@ -114,4 +114,14 @@ getTotalRestrictions() {
   return Object.keys(this.restrictions).length;
 }
 
+getFoodDisplayForFood(food: any) {
+  if (food.name==undefined || food.calories==undefined) return "ew";
+  var display = food.name + " -";
+  for (let entry of this.goalTypes) {
+    if (!(entry in food)) continue;
+    display = display + " " + entry + ": " + food[entry];
+  }
+  return display;
+}
+
 }
