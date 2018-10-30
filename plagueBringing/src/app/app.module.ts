@@ -7,13 +7,14 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AddModalPage } from '../pages/add-modal/add-modal';
-
+import { AddFoodModalPage } from '../pages/add-food-modal/add-food-modal';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    AddModalPage
+    AddModalPage,
+    AddFoodModalPage
   ],
   imports: [
     BrowserModule,
@@ -23,7 +24,8 @@ import { AddModalPage } from '../pages/add-modal/add-modal';
   entryComponents: [
     MyApp,
     HomePage,
-    AddModalPage
+    AddModalPage,
+    AddFoodModalPage
   ],
   providers: [
     StatusBar,

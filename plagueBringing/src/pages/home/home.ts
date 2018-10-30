@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ViewController, ModalController, NavController, AlertController } from 'ionic-angular';
 import { AddModalPage } from '../add-modal/add-modal';
+import { AddFoodModalPage } from '../add-food-modal/add-food-modal';
+
 
 @Component({
   selector: 'page-home',
@@ -28,28 +30,23 @@ export class HomePage {
       this.goalTypes = ["calories", "protein", "fat", "carbs", "sugar" ];
   }
 
-  addNote(){
-    let prompt = this.alertCtrl.create({
-        title: 'Add Food',
-        message: "Enter the food's name and calories!",
-        inputs: [{
-            name: 'name',
-            placeholder: "Hamburger"
-        }, { name: 'calories', placeholder: '100', type: "number"}],
-        buttons: [
-            {
-                text: 'Cancel'
-            },
-            {
-                text: 'Add',
-                handler: data => {
-                    this.groceries.push({name: data.name, calories: +data.calories});
-                }
-            }
-        ]
-    });
+addFoodModal() {
+  let myModal = this.modalCtrl.create(AddFoodModalPage);
+  myModal.present();
 
-    prompt.present();
+  myModal.onDidDismiss(data => {
+    if (data.calories == 0 || data.name == "") { return; };
+
+    var object = {};
+    object.name = data.name;
+    object.calories = +data.calories;
+    if (data.fat != 0) object.fat = +data.fat;
+    if (data.protein != 0) object.protein = +data.protein;
+    if (data.carbs != 0) object.carbs = +data.carbs;
+    if (data.sugar != 0) object.sugar = +data.sugar;
+
+    this.groceries.push(object);
+  });
 }
 
 addModal(isGoal: boolean) {
