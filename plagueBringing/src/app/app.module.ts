@@ -3,10 +3,13 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { IonicStorageModule } from '@ionic/Storage';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { AddModalPage } from '../pages/add-modal/add-modal';
+import { SQLite } from '@ionic-native/sqlite';
+import { Toast } from '@ionic-native/toast';
 
 
 @NgModule({
@@ -17,7 +20,8 @@ import { AddModalPage } from '../pages/add-modal/add-modal';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -28,7 +32,10 @@ import { AddModalPage } from '../pages/add-modal/add-modal';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    SQLite,
+    Toast,
+    IonicStorageModule
   ]
 })
 export class AppModule {}
