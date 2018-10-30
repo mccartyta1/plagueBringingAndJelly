@@ -17,13 +17,13 @@ export class HomePage {
   goalTypes: any;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController, private sqlite: SQLite, private toast: Toast) {
-      this.groceries = [
-          {name: "The Ol' Turkey", calories: 4000, protein: 15},
-          {name: "Glass of Milk", calories: 200, sugar: 20},
-          {name: "Fried Squirrel", calories: 600},
-          {name: "Glass of Milk", calories: 200},
-          {name: "Boiled Squirrel", calories: 600}
-      ];
+      // this.groceries = [
+      //     {name: "The Ol' Turkey", calories: 4000, protein: 15},
+      //     {name: "Glass of Milk", calories: 200, sugar: 20},
+      //     {name: "Fried Squirrel", calories: 600},
+      //     {name: "Glass of Milk", calories: 200},
+      //     {name: "Boiled Squirrel", calories: 600}
+      // ];
 
       this.goals = {calories: 2000};
       this.restrictions = {calories: 6000};
@@ -49,11 +49,11 @@ export class HomePage {
       db.executeSql('SELECT * FROM groceries ORDER BY rowid DESC', [])
       .then(res => {
         this.groceries = [
-            {name: "The Ol' Turkey", calories: 4000, protein: 15},
-            {name: "Glass of Milk", calories: 200, sugar: 20},
-            {name: "Fried Squirrel", calories: 600},
-            {name: "Glass of Milk", calories: 200},
-            {name: "Boiled Squirrel", calories: 600}
+            // {name: "The Ol' Turkey", calories: 4000, protein: 15},
+            // {name: "Glass of Milk", calories: 200, sugar: 20},
+            // {name: "Fried Squirrel", calories: 600},
+            // {name: "Glass of Milk", calories: 200},
+            // {name: "Boiled Squirrel", calories: 600}
         ];
         for(var i=0; i<res.rows.length; i++) {
           this.groceries.push({rowid:res.rows.item(i).rowid, name:res.rows.item(i).name, calories:res.rows.item(i).calories,
@@ -67,14 +67,14 @@ export class HomePage {
   addNote(){
     let prompt = this.alertCtrl.create({
         title: 'Add Food',
-        message: "Enter the food's name and calories!",
+        message: "Enter the food's name and calories! All other fields are optional.",
         inputs: [
-            { name: 'name', placeholder: "Hamburger" }, 
-            { name: 'calories', placeholder: '100', type: "number"},
-            { name: 'protein', placeholder: '10', type: "number"},
-            { name: 'fat', placeholder: '9', type: "number"},
-            { name: 'carbs', placeholder: '8', type: "number"},
-            { name: 'sugar', placeholder: '7', type: "number"}
+            { name: 'name', placeholder: "Name of Food*" }, 
+            { name: 'calories', placeholder: 'Calories*', type: "number"},
+            { name: 'protein', placeholder: 'Protein', type: "number"},
+            { name: 'fat', placeholder: 'Fat', type: "number"},
+            { name: 'carbs', placeholder: 'Carbohydrates', type: "number"},
+            { name: 'sugar', placeholder: 'Sugar', type: "number"}
 
         ],
         buttons: [
@@ -98,6 +98,7 @@ export class HomePage {
                               this.navCtrl.popToRoot();
                             }
                           );
+                          this.getData();
                         })
                         .catch(e => {
                           console.log(e);
