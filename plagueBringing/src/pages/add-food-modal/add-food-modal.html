@@ -12,46 +12,19 @@
 
 </ion-header>
 <ion-content>
-  <ion-item>
   <ion-label color="primary">Food Name</ion-label>
   <ion-input [(ngModel)]="userProvidedData.name" (ngModelChange)="numberTextChanged(value)" placeholder="Burger"></ion-input>
-</ion-item>
-<ion-item>
 
   <ion-label color="primary">Calories</ion-label>
   <ion-input [(ngModel)]="userProvidedData.calories" (ngModelChange)="numberTextChanged(value)" placeholder="42"></ion-input>
-</ion-item>
-<ion-item *ngIf=" addProtein">
-
   <ion-label  color="primary">Protein</ion-label>
-  <ion-input [(ngModel)]="userProvidedData.protein" (ngModelChange)="numberTextChanged(value)" placeholder="4.2"></ion-input>
-</ion-item>
-<ion-item *ngIf=" addFat">
-
+  <ion-input [(ngModel)]="userProvidedData.protein" (ngModelChange)="numberTextChanged(value)" placeholder="0"></ion-input>
   <ion-label  color="primary">Fat</ion-label>
-  <ion-input [(ngModel)]="userProvidedData.fat" (ngModelChange)="numberTextChanged(value)" placeholder="4.2"></ion-input>
-</ion-item>
-<ion-item *ngIf=" addCarbs">
-
+  <ion-input [(ngModel)]="userProvidedData.fat" (ngModelChange)="numberTextChanged(value)" placeholder="0"></ion-input>
   <ion-label  color="primary">Carbs</ion-label>
-  <ion-input [(ngModel)]="userProvidedData.carbs" (ngModelChange)="numberTextChanged(value)" placeholder="4.2"></ion-input>
-</ion-item>
-<ion-item *ngIf=" addSugar" >
+  <ion-input [(ngModel)]="userProvidedData.carbs" (ngModelChange)="numberTextChanged(value)" placeholder="0"></ion-input>
   <ion-label color="primary">Sugar</ion-label>
-  <ion-input [(ngModel)]="userProvidedData.sugar" (ngModelChange)="numberTextChanged(value)" placeholder="4.2"></ion-input>
-</ion-item>
-<ion-item>
-  <ion-select [(ngModel)]="type" (ngModelChange)="optionsFn(type)">
-    <ion-option value=1>Protein</ion-option>
-    <ion-option value=2>Fat</ion-option>
-    <ion-option value=3>Carbs</ion-option>
-    <ion-option value=4>Sugar</ion-option>
-  </ion-select>
-</ion-item>
-
-  <button ion-item (click)="addTextbox()">
-    Add Textbox
-  </button>
+  <ion-input [(ngModel)]="userProvidedData.sugar" (ngModelChange)="numberTextChanged(value)" placeholder="0"></ion-input>
 <ion-item>
         <button ion-item (click)="closeModal()">
           Confirm

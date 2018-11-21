@@ -22,7 +22,7 @@ export class AddFoodModalPage {
   addSugar = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
-    this.userProvidedData.name = "Hmmm...";
+    this.userProvidedData.name = "Burger";
     this.goalTypes = ["calories", "protein", "fat", "carbs", "sugar" ];
     this.selectedType = "";
   }
@@ -32,10 +32,10 @@ export class AddFoodModalPage {
   }
 
   closeModal() {
-    if (!this.addProtein) { this.userProvidedData.protein = 0; }
-    if (!this.addFat) { this.userProvidedData.fat = 0; }
-    if (!this.addCarbs) { this.userProvidedData.carbs = 0; }
-    if (!this.addSugar) { this.userProvidedData.sugar = 0; }
+    if (!this.userProvidedData.protein > 0) { this.userProvidedData.protein = 0; }
+    if (!this.userProvidedData.fat > 0) { this.userProvidedData.fat = 0; }
+    if (!this.userProvidedData.carbs > 0) { this.userProvidedData.carbs = 0; }
+    if (!this.userProvidedData.sugar > 0) { this.userProvidedData.sugar = 0; }
     this.viewCtrl.dismiss(this.userProvidedData);
   }
 
