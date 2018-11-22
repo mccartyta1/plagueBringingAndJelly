@@ -12,9 +12,10 @@
 
 </ion-header>
 <ion-content>
-  <ion-label color="primary">Food Name</ion-label>
-  <ion-input [(ngModel)]="userProvidedData.name" (ngModelChange)="numberTextChanged(value)" placeholder="Burger"></ion-input>
-
+  <ion-item>
+  <ion-label item-right color="primary">Food Name</ion-label>
+  <ion-input item-left [(ngModel)]="userProvidedData.name" (ngModelChange)="numberTextChanged(value)" placeholder="Burger"></ion-input>
+</ion-item>
   <ion-label color="primary">Calories</ion-label>
   <ion-input [(ngModel)]="userProvidedData.calories" (ngModelChange)="numberTextChanged(value)" placeholder="42"></ion-input>
   <ion-label  color="primary">Protein</ion-label>

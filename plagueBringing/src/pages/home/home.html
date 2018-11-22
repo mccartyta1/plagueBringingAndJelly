@@ -47,7 +47,26 @@
   <ion-toolbar>
     <ion-title>
       <ion-item left>Calories: {{caloriesForDay()}}</ion-item>
-      <ion-item right>Goals: {{metGoals()}} / {{getTotalGoals()}} - Restrictions: {{metRestrictions()}} / {{getTotalRestrictions()}} </ion-item>
+      <ion-grid>
+        <ion-row wrap>
+          <ion-col>
+            <ion-item>Goals:</ion-item>
+            </ion-col>
+          <ion-col  *ngFor="let goal of getArrayOfGoals()">
+            <img *ngIf="goal" style="max-height:50%;max-width:50%" src="assets/imgs/checkmark.jpg" alt="your image">
+            <img *ngIf="!goal" style="max-width:7%" src="assets/imgs/redx.png" alt="your image">
+          </ion-col>
+        </ion-row>
+        <ion-row wrap>
+          <ion-col>
+            <ion-item>Restrictions:</ion-item>
+            </ion-col>
+          <ion-col  *ngFor="let goal of getArrayOfRestrictions()">
+            <img *ngIf="goal" style="max-height:50%;max-width:50%" src="assets/imgs/checkmark.jpg" alt="your image">
+            <img *ngIf="!goal" style="max-width:7%" src="assets/imgs/redx.png" alt="your image">
+          </ion-col>
+        </ion-row>
+        </ion-grid>
     </ion-title>
   </ion-toolbar>
 </ion-footer>

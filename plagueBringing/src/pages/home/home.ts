@@ -25,7 +25,7 @@ export class HomePage {
           {name: "Boiled Squirrel", calories: 600}
       ];
 
-      this.goals = {calories: 2000};
+      this.goals = {calories: 2000, protein: 10};
       this.restrictions = {calories: 6000};
       this.goalTypes = ["calories", "protein", "fat", "carbs", "sugar" ];
   }
@@ -82,6 +82,33 @@ getSumOfNutrient(nutrient: String) {
 
 caloriesForDay() {
   return this.getSumOfNutrient("calories");
+}
+
+getArrayOfGoals() {
+  var goalsMet = this.metGoals();
+  var totalGoals = this.getTotalGoals();
+  var array = [];
+  for (let i = 0; i < goalsMet; i++) {
+    array.push(true);
+  }
+  for (let j = goalsMet; j < totalGoals; j++) {
+    array.push(false);
+  }
+  return array;
+}
+
+getArrayOfRestrictions() {
+  var resMet = this.metRestrictions();
+  var totalRes = this.getTotalRestrictions();
+  var array = [];
+  for (let i = 0; i < resMet; i++) {
+    array.push(true);
+  }
+  for (let j = resMet; j < totalRes; j++) {
+    array.push(false);
+  }
+  console.log(array);
+  return array;
 }
 
 metGoals() {
