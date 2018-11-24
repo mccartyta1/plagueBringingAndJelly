@@ -43,7 +43,7 @@
 </ion-content>
 <ion-nav #mycontent [root]="rootPage"></ion-nav>
 
-<ion-footer>
+<ion-footer style="margin:10px;">
   <ion-toolbar>
     <ion-title>
       <ion-item left>Calories: {{caloriesForDay()}}</ion-item>
@@ -52,9 +52,11 @@
           <ion-col>
             <ion-item>Goals:</ion-item>
             </ion-col>
-          <ion-col  *ngFor="let goal of getArrayOfGoals()">
-            <img *ngIf="goal" style="max-height:50%;max-width:50%" src="assets/imgs/checkmark.jpg" alt="your image">
-            <img *ngIf="!goal" style="max-width:7%" src="assets/imgs/redx.png" alt="your image">
+          <ion-col  style="padding:0;"*ngFor="let goal of getArrayOfGoals()">
+            <ion-item style="margin-right:0px;max-height:50%;max-width:50%">
+            <img *ngIf="goal" style="max-height:100%;max-width:100%" src="assets/imgs/checkmark.jpg" alt="your image">
+            <img *ngIf="!goal" style="max-height:100%;max-width:100%" src="assets/imgs/redx.png" alt="your image">
+            </ion-item>
           </ion-col>
         </ion-row>
         <ion-row wrap>
@@ -62,8 +64,10 @@
             <ion-item>Restrictions:</ion-item>
             </ion-col>
           <ion-col  *ngFor="let goal of getArrayOfRestrictions()">
-            <img *ngIf="goal" style="max-height:50%;max-width:50%" src="assets/imgs/checkmark.jpg" alt="your image">
-            <img *ngIf="!goal" style="max-width:7%" src="assets/imgs/redx.png" alt="your image">
+            <ion-item style="max-height:50%;max-width:50%">
+            <img *ngIf="goal" style="max-height:100%;max-width:100%" src="assets/imgs/checkmark.jpg" alt="your image">
+            <img *ngIf="!goal" style="max-height:100%;max-width:100%" src="assets/imgs/redx.png" alt="your image">
+          </ion-item>
           </ion-col>
         </ion-row>
         </ion-grid>
