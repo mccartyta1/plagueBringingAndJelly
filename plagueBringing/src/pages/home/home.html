@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>My Food</ion-title>
+    <ion-title>My Food Log</ion-title>
     <ion-buttons left>
         <button ion-button icon-only menuToggle><ion-icon name="menu"></ion-icon></button>
     </ion-buttons>
@@ -41,11 +41,8 @@
     </ion-content>
   </ion-menu>
 
-  <button ion-button full (click)="scheduleNotification()">Schedule!</button>
-
   <ion-footer>
     <ion-title>
-      <ion-item left>Calories: {{caloriesForDay()}}</ion-item>
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -53,7 +50,7 @@
           </ion-col>
           <ion-col  style="padding:0;"*ngFor="let goal of getArrayOfGoals()">
             <ion-item style="margin-right:0px;max-height:50%;max-width:50%">
-            <img *ngIf="goal" style="max-height:100%;max-width:100%" src="assets/imgs/checkmark.jpg" alt="your image">
+            <img *ngIf="goal" style="height:35px;width:35px" src="assets/imgs/checkmark.jpg" alt="your image">
             <img *ngIf="!goal" style="max-height:100%;max-width:100%" src="assets/imgs/redx.png" alt="your image">
             </ion-item>
           </ion-col>
@@ -63,13 +60,14 @@
             <ion-item>Restrictions:</ion-item>
             </ion-col>
           <ion-col  *ngFor="let goal of getArrayOfRestrictions()">
-            <ion-item style="max-height:50%;max-width:50%">
-            <img *ngIf="goal" style="max-height:100%;max-width:100%" src="assets/imgs/checkmark.jpg" alt="your image">
-            <img *ngIf="!goal" style="max-height:100%;max-width:100%" src="assets/imgs/redx.png" alt="your image">
+            <ion-item style="margin-right:0px;max-height:50%;max-width:50%">
+            <img *ngIf="goal" style="height:40px;width:40px" src="assets/imgs/checkmark.jpg" alt="your image">
+            <img *ngIf="!goal" style="height:40px;width:40px" src="assets/imgs/redx.png" alt="your image">
           </ion-item>
           </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-item left>Total Calories Today: {{caloriesForDay()}}</ion-item>
     </ion-title>
   </ion-footer>
 

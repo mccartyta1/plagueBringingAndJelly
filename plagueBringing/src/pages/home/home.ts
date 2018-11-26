@@ -18,17 +18,10 @@ export class HomePage {
   goals: any;
   restrictions: any;
   goalTypes: any;
+  notification: boolean;
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, 
-    public modalCtrl: ModalController, private sqlite: SQLite, private toast: Toast, private localNotifications: LocalNotifications,
-    private platform: Platform) {
-      // this.groceries = [
-      //     {name: "The Ol' Turkey", calories: 4000, protein: 15},
-      //     {name: "Glass of Milk", calories: 200, sugar: 20},
-      //     {name: "Fried Squirrel", calories: 600},
-      //     {name: "Glass of Milk", calories: 200},
-      //     {name: "Boiled Squirrel", calories: 600}
-      // ];
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController, 
+    private sqlite: SQLite, private toast: Toast, private localNotifications: LocalNotifications, private platform: Platform) {
 
       this.goals = {calories: 2000, protein: 10};
       this.restrictions = {calories: 6000};
@@ -45,6 +38,8 @@ export class HomePage {
         alert.present();
         });
       });
+
+      this.notification = false;
   }
 
 onViewDidLoad() {
@@ -53,6 +48,7 @@ onViewDidLoad() {
 
 ionViewWillEnter() {
   this.getData();
+  this.scheduleNotification();
 }
 
 getData() {
@@ -60,25 +56,34 @@ getData() {
     name: 'ionicdb.db',
     location: 'default'
   }).then((db: SQLiteObject) => {
-    db.executeSql('CREATE TABLE IF NOT EXISTS groceries(rowid INTEGER PRIMARY KEY, name TEXT, calories INT, protein INT, fat INT, carbs INT, sugar INT)', [])
+    // db.executeSql('DROP TABLE IF EXISTS groceries', [])
+    // .catch(e => console.log('ERROR DROPPING TABLE', e));
+
+    db.executeSql('DELETE FROM groceries WHERE date!=?', [this.getFormattedDate()])
+    .catch(e => console.log('ERROR DELETING TABLE', JSON.stringify(e)));
+
+    db.executeSql('CREATE TABLE IF NOT EXISTS groceries(rowid INTEGER PRIMARY KEY, name TEXT, calories INT, protein INT, fat INT, carbs INT, sugar INT, date TEXT)', [])
     .catch(e => console.log('-----error is: ------ ', e));
     db.executeSql('SELECT * FROM groceries ORDER BY rowid DESC', [])
     .then(res => {
       this.groceries = [
-          {name: "The Ol' Turkey", calories: 4000, protein: 15, date: 'now'},
-          {name: "Glass of Milk", calories: 200, sugar: 20},
-          {name: "Fried Squirrel", calories: 600},
-          {name: "Glass of Milk", calories: 200},
-          {name: "Boiled Squirrel", calories: 600}
+          {name: "The Ol' Turkey", calories: 4000, protein: 15, date: this.getFormattedDate()},
+          {name: "Glass of Milk", calories: 200, sugar: 20, date: this.getFormattedDate()},
+          {name: "Fried Squirrel", calories: 600, date: "March 25, 2018"},
       ];
       for(var i=0; i<res.rows.length; i++) {
         this.groceries.push({rowid:res.rows.item(i).rowid, name:res.rows.item(i).name, calories:res.rows.item(i).calories,
           protein:res.rows.item(i).protein, fat:res.rows.item(i).fat, carbs:res.rows.item(i).carbs, 
-          sugar:res.rows.item(i).sugar})
+          sugar:res.rows.item(i).sugar, date:res.rows.item(i).date})
       }
     })
     .catch(e => console.log(e));
   }).catch(e => console.log(e));
+ }
+
+ getFormattedDate() {
+  let now = new Date();
+  return now.toString().substring(0,15);
  }
 
  deleteData() {
@@ -86,13 +91,14 @@ getData() {
     name: 'ionicdb.db',
     location: 'default'
   }).then((db: SQLiteObject) => {
-    db.executeSql('DELETE * FROM groceries', [])
+    db.executeSql('DELETE FROM groceries', [])
+    .then(res => {
+      console.log(res);
+      this.getData();
+    })
     .catch(e => console.log(e));
   }).catch(e => console.log(e));
- }
-
-
-
+}
 
 addFoodModal() {
   let myModal = this.modalCtrl.create(AddFoodModalPage);
@@ -109,18 +115,16 @@ addFoodModal() {
     if (data.carbs != 0) object.carbs = +data.carbs;
     if (data.sugar != 0) object.sugar = +data.sugar;
 
-    let date = new Date(new Date().getTime());
-
-    //this.groceries.push(object);
+    let date = this.getFormattedDate();
 
     this.sqlite.create({
       name: 'ionicdb.db',
       location: 'default'
     }).then((db: SQLiteObject) => {
-      db.executeSql('INSERT INTO groceries VALUES(NULL,?,?,?,?,?,?)',[data.name, 
-        data.calories, data.protein, data.fat, data.carbs, data.sugar])
+      db.executeSql('INSERT INTO groceries VALUES(NULL,?,?,?,?,?,?,?)',[data.name, 
+        data.calories, data.protein, data.fat, data.carbs, data.sugar, date])
         .then(res => {
-          console.log(res);
+          //console.log(res);
           this.toast.show('Data saved', '5000', 'center').subscribe(
             toast => {
               this.navCtrl.popToRoot();
@@ -186,6 +190,7 @@ caloriesForDay() {
 getArrayOfGoals() {
   var goalsMet = this.metGoals();
   var totalGoals = this.getTotalGoals();
+
   var array = [];
   for (let i = 0; i < goalsMet; i++) {
     array.push(true);
@@ -206,7 +211,6 @@ getArrayOfRestrictions() {
   for (let j = resMet; j < totalRes; j++) {
     array.push(false);
   }
-  console.log(array);
   return array;
 }
 
@@ -229,7 +233,6 @@ metRestrictions() {
 }
 
 getTotalGoals() {
-  console.log(this.goals);
   return Object.keys(this.goals).length;
 }
 
@@ -239,45 +242,29 @@ getTotalRestrictions() {
 
 getFoodDisplayForFood(food: any) {
   if (food.name==undefined || food.calories==undefined) return "ew";
-  var display = food.name + " -";
-  for (let entry of this.goalTypes) {
-    if (!(entry in food)) continue;
-    display = display + " " + entry + ": " + food[entry];
-  }
+  var display = food.name + " - " + food.date;
+  // for (let entry of this.goalTypes) {
+  //   if (!(entry in food)) continue;
+  //   display = display + " " + entry + ": " + food[entry];
+  // }
   return display;
 }
 
 scheduleNotification() {
-  let year = new Date().getFullYear();
-  let month = new Date().getMonth();
-  let day = new Date().getDate();
-  let date = new Date();
+  var d = new Date();
+  d.setHours(16,0o0,0,0);
 
-  let time1 = new Date(year, month, day, 7, 54, 0, 0);
-  
-  let seconds_5 = new Date(new Date(new Date().getTime() + 5 * 1000));
+  if(d.getHours() >= 1) {
+    d.setDate(d.getDate() + 1);
+  };
 
   this.localNotifications.schedule({
-      id: 1,
-      title: 'My first notification',
-      text: 'First notification test one',
-      trigger: { at: new Date(new Date().getTime() + 5 * 1000) },
-      data: {"id": 1, "name": "Mr. A"}
-    });
-
-
-
-
-
-
-
-  // this.localNotifications.schedule({
-  //   id: 1,
-  //   title: 'Attention: first notification',
-  //   text: 'Text of notification',
-  //   trigger: { at: new Date(new Date().getTime() + 5 * 1000) },
-  //   data: { mydata: 'My hidden message is this' }
-  // });
+    id: 1,
+    title: 'Have you eaten food today?!',
+    text: 'Log it!',
+    trigger: { at: d },
+    data: { mydata: 'My hidden message is this' }
+  });
 }
 
 }

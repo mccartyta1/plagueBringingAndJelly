@@ -42,6 +42,10 @@ export class AddFoodModalPage {
     this.viewCtrl.dismiss(this.userProvidedData);
   }
 
+  cancel() {
+    this.viewCtrl.dismiss();
+  }
+
   optionsFn(type: any) {
     this.selectedType = type;
   }

@@ -29,6 +29,10 @@ export class AddModalPage {
     this.viewCtrl.dismiss(this.userProvidedData);
   }
 
+  cancel() {
+    this.viewCtrl.dismiss();
+  }
+
   optionsFn(type: any) {
     this.userProvidedData.type = type;
   }
