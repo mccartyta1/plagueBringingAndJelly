@@ -15,14 +15,17 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 })
 export class AddFoodModalPage {
 
-  userProvidedData = { name: "", calories: 0};
+  userProvidedData = { name: "", calories: 0, protein: 0, fat: 0, carbs: 0, sugar: 0};
   addFat = false;
   addProtein = false;
   addCarbs = false;
   addSugar = false;
+  goalTypes: any;
+  selectedType: any;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
-    this.userProvidedData.name = "Hmmm...";
+    this.userProvidedData.name = "Burger";
     this.goalTypes = ["calories", "protein", "fat", "carbs", "sugar" ];
     this.selectedType = "";
   }
@@ -32,10 +35,10 @@ export class AddFoodModalPage {
   }
 
   closeModal() {
-    if (!this.addProtein) { this.userProvidedData.protein = 0; }
-    if (!this.addFat) { this.userProvidedData.fat = 0; }
-    if (!this.addCarbs) { this.userProvidedData.carbs = 0; }
-    if (!this.addSugar) { this.userProvidedData.sugar = 0; }
+    if (!(this.userProvidedData.protein > 0)) { this.userProvidedData.protein = 0; }
+    if (!(this.userProvidedData.fat > 0)) { this.userProvidedData.fat = 0; }
+    if (!(this.userProvidedData.carbs > 0)) { this.userProvidedData.carbs = 0; }
+    if (!(this.userProvidedData.sugar > 0)) { this.userProvidedData.sugar = 0; }
     this.viewCtrl.dismiss(this.userProvidedData);
   }
 
@@ -48,11 +51,10 @@ export class AddFoodModalPage {
   }
 
   addTextbox() {
-    console.log(this.type);
-    if (this.type == 1) { this.addProtein = true; }
-    if (this.type == 2) { this.addFat = true; }
-    if (this.type == 3) { this.addCarbs = true; }
-    if (this.type == 4) { this.addSugar = true; }
+    if (this.selectedType == 1) { this.addProtein = true; }
+    if (this.selectedType == 2) { this.addFat = true; }
+    if (this.selectedType == 3) { this.addCarbs = true; }
+    if (this.selectedType == 4) { this.addSugar = true; }
   }
 
 }
