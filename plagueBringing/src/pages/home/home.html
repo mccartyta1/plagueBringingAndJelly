@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Notes</ion-title>
+    <ion-title>My Food</ion-title>
     <ion-buttons left>
         <button ion-button icon-only menuToggle><ion-icon name="menu"></ion-icon></button>
     </ion-buttons>
@@ -40,18 +40,17 @@
       </ion-list>
     </ion-content>
   </ion-menu>
-</ion-content>
-<ion-nav #mycontent [root]="rootPage"></ion-nav>
 
-<ion-footer style="margin:10px;">
-  <ion-toolbar>
+  <button ion-button full (click)="scheduleNotification()">Schedule!</button>
+
+  <ion-footer>
     <ion-title>
       <ion-item left>Calories: {{caloriesForDay()}}</ion-item>
       <ion-grid>
-        <ion-row wrap>
+        <ion-row>
           <ion-col>
             <ion-item>Goals:</ion-item>
-            </ion-col>
+          </ion-col>
           <ion-col  style="padding:0;"*ngFor="let goal of getArrayOfGoals()">
             <ion-item style="margin-right:0px;max-height:50%;max-width:50%">
             <img *ngIf="goal" style="max-height:100%;max-width:100%" src="assets/imgs/checkmark.jpg" alt="your image">
@@ -70,7 +69,9 @@
           </ion-item>
           </ion-col>
         </ion-row>
-        </ion-grid>
+      </ion-grid>
     </ion-title>
-  </ion-toolbar>
-</ion-footer>
+  </ion-footer>
+
+</ion-content>
+<ion-nav #mycontent [root]="rootPage"></ion-nav>

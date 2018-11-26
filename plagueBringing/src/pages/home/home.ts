@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { ViewController, ModalController, NavController, AlertController } from 'ionic-angular';
+import { ViewController, ModalController, NavController, AlertController, Platform } from 'ionic-angular';
 import { AddModalPage } from '../add-modal/add-modal';
 import { AddFoodModalPage } from '../add-food-modal/add-food-modal';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import { Toast } from '@ionic-native/toast';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 
 @Component({
@@ -11,24 +14,85 @@ import { AddFoodModalPage } from '../add-food-modal/add-food-modal';
 
 export class HomePage {
 
-  groceries: any;
+  groceries: any = [];
   goals: any;
   restrictions: any;
   goalTypes: any;
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, 
+    public modalCtrl: ModalController, private sqlite: SQLite, private toast: Toast, private localNotifications: LocalNotifications,
+    private platform: Platform) {
+      // this.groceries = [
+      //     {name: "The Ol' Turkey", calories: 4000, protein: 15},
+      //     {name: "Glass of Milk", calories: 200, sugar: 20},
+      //     {name: "Fried Squirrel", calories: 600},
+      //     {name: "Glass of Milk", calories: 200},
+      //     {name: "Boiled Squirrel", calories: 600}
+      // ];
+
+      this.goals = {calories: 2000, protein: 10};
+      this.restrictions = {calories: 6000};
+      this.goalTypes = ["calories", "protein", "fat", "carbs", "sugar" ];
+      
+      this.platform.ready().then((rdy) => {
+        this.localNotifications.on('click').subscribe(notification => {
+          let json = JSON.parse(notification.data);
+
+          let alert = this.alertCtrl.create({
+            title: notification.title,
+            subTitle: json.mydata
+          });
+        alert.present();
+        });
+      });
+  }
+
+onViewDidLoad() {
+  this.getData();
+  }
+
+ionViewWillEnter() {
+  this.getData();
+}
+
+getData() {
+  this.sqlite.create({
+    name: 'ionicdb.db',
+    location: 'default'
+  }).then((db: SQLiteObject) => {
+    db.executeSql('CREATE TABLE IF NOT EXISTS groceries(rowid INTEGER PRIMARY KEY, name TEXT, calories INT, protein INT, fat INT, carbs INT, sugar INT)', [])
+    .catch(e => console.log('-----error is: ------ ', e));
+    db.executeSql('SELECT * FROM groceries ORDER BY rowid DESC', [])
+    .then(res => {
       this.groceries = [
-          {name: "The Ol' Turkey", calories: 4000, protein: 15},
+          {name: "The Ol' Turkey", calories: 4000, protein: 15, date: 'now'},
           {name: "Glass of Milk", calories: 200, sugar: 20},
           {name: "Fried Squirrel", calories: 600},
           {name: "Glass of Milk", calories: 200},
           {name: "Boiled Squirrel", calories: 600}
       ];
+      for(var i=0; i<res.rows.length; i++) {
+        this.groceries.push({rowid:res.rows.item(i).rowid, name:res.rows.item(i).name, calories:res.rows.item(i).calories,
+          protein:res.rows.item(i).protein, fat:res.rows.item(i).fat, carbs:res.rows.item(i).carbs, 
+          sugar:res.rows.item(i).sugar})
+      }
+    })
+    .catch(e => console.log(e));
+  }).catch(e => console.log(e));
+ }
 
-      this.goals = {calories: 2000, protein: 10};
-      this.restrictions = {calories: 6000};
-      this.goalTypes = ["calories", "protein", "fat", "carbs", "sugar" ];
-  }
+ deleteData() {
+  this.sqlite.create({
+    name: 'ionicdb.db',
+    location: 'default'
+  }).then((db: SQLiteObject) => {
+    db.executeSql('DELETE * FROM groceries', [])
+    .catch(e => console.log(e));
+  }).catch(e => console.log(e));
+ }
+
+
+
 
 addFoodModal() {
   let myModal = this.modalCtrl.create(AddFoodModalPage);
@@ -37,7 +101,7 @@ addFoodModal() {
   myModal.onDidDismiss(data => {
     if (data.calories == 0 || data.name == "") { return; };
 
-    var object = {};
+    var object = <any>{};
     object.name = data.name;
     object.calories = +data.calories;
     if (data.fat != 0) object.fat = +data.fat;
@@ -45,7 +109,42 @@ addFoodModal() {
     if (data.carbs != 0) object.carbs = +data.carbs;
     if (data.sugar != 0) object.sugar = +data.sugar;
 
-    this.groceries.push(object);
+    let date = new Date(new Date().getTime());
+
+    //this.groceries.push(object);
+
+    this.sqlite.create({
+      name: 'ionicdb.db',
+      location: 'default'
+    }).then((db: SQLiteObject) => {
+      db.executeSql('INSERT INTO groceries VALUES(NULL,?,?,?,?,?,?)',[data.name, 
+        data.calories, data.protein, data.fat, data.carbs, data.sugar])
+        .then(res => {
+          console.log(res);
+          this.toast.show('Data saved', '5000', 'center').subscribe(
+            toast => {
+              this.navCtrl.popToRoot();
+            }
+          );
+          this.getData();
+        })
+        .catch(e => {
+          console.log(e);
+          this.toast.show(e, '5000', 'center').subscribe(
+            toast => {
+              console.log(toast);
+            }
+          );
+        });
+    }).catch(e => {
+      console.log(e);
+      this.toast.show(e, '5000', 'center').subscribe(
+        toast => {
+          console.log(toast);
+        }
+      );
+    });
+
   });
 }
 
@@ -71,7 +170,7 @@ addRestriction() {
   this.addModal(false);
 }
 
-getSumOfNutrient(nutrient: String) {
+getSumOfNutrient(nutrient: string) {
   var sum = 0;
   for (let entry of this.groceries) {
     if (!(nutrient in entry)) continue;
@@ -146,6 +245,39 @@ getFoodDisplayForFood(food: any) {
     display = display + " " + entry + ": " + food[entry];
   }
   return display;
+}
+
+scheduleNotification() {
+  let year = new Date().getFullYear();
+  let month = new Date().getMonth();
+  let day = new Date().getDate();
+  let date = new Date();
+
+  let time1 = new Date(year, month, day, 7, 54, 0, 0);
+  
+  let seconds_5 = new Date(new Date(new Date().getTime() + 5 * 1000));
+
+  this.localNotifications.schedule({
+      id: 1,
+      title: 'My first notification',
+      text: 'First notification test one',
+      trigger: { at: new Date(new Date().getTime() + 5 * 1000) },
+      data: {"id": 1, "name": "Mr. A"}
+    });
+
+
+
+
+
+
+
+  // this.localNotifications.schedule({
+  //   id: 1,
+  //   title: 'Attention: first notification',
+  //   text: 'Text of notification',
+  //   trigger: { at: new Date(new Date().getTime() + 5 * 1000) },
+  //   data: { mydata: 'My hidden message is this' }
+  // });
 }
 
 }

@@ -7,26 +7,33 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>add-food-modal</ion-title>
+    <ion-title>Add Food</ion-title>
   </ion-navbar>
 
 </ion-header>
 <ion-content style="margin:10px">
   <ion-label item-right color="primary">Food Name</ion-label>
-  <ion-input item-left [(ngModel)]="userProvidedData.name" (ngModelChange)="numberTextChanged(value)" placeholder="Burger"></ion-input>
+  <ion-input item-left [(ngModel)]="userProvidedData.name" (ngModelChange)="numberTextChanged(value)" placeholder="Burger" ></ion-input>
+
   <ion-label color="primary">Calories</ion-label>
-  <ion-input style="margin:5px [(ngModel)]="userProvidedData.calories" (ngModelChange)="numberTextChanged(value)" placeholder="42"></ion-input>
+  <ion-input style="margin:5px outline-style:solid" [(ngModel)]="userProvidedData.calories" (ngModelChange)="numberTextChanged(value)" placeholder="42" ></ion-input>
+  
   <ion-label  color="primary">Protein</ion-label>
-  <ion-input  style="margin:5px [(ngModel)]="userProvidedData.protein" (ngModelChange)="numberTextChanged(value)" placeholder="0"></ion-input>
+  <ion-input  style="margin:5px" [(ngModel)]="userProvidedData.protein" (ngModelChange)="numberTextChanged(value)" placeholder="0" ></ion-input>
+  
+  
   <ion-label  color="primary">Fat</ion-label>
-  <ion-input  style="margin:5px [(ngModel)]="userProvidedData.fat" (ngModelChange)="numberTextChanged(value)" placeholder="0"></ion-input>
+  <ion-input  style="margin:5px" [(ngModel)]="userProvidedData.fat" (ngModelChange)="numberTextChanged(value)" placeholder="0" ></ion-input>
+  
   <ion-label  color="primary">Carbs</ion-label>
-  <ion-input style="margin:5px [(ngModel)]="userProvidedData.carbs" (ngModelChange)="numberTextChanged(value)" placeholder="0"></ion-input>
+  <ion-input style="margin:5px" [(ngModel)]="userProvidedData.carbs" (ngModelChange)="numberTextChanged(value)" placeholder="0" ></ion-input>
+  
   <ion-label color="primary">Sugar</ion-label>
-  <ion-input style="margin:5px [(ngModel)]="userProvidedData.sugar" (ngModelChange)="numberTextChanged(value)" placeholder="0"></ion-input>
-<ion-item>
-        <button ion-item (click)="closeModal()">
-          Confirm
-        </button>
-      </ion-item>
+  <ion-input style="margin:5px" [(ngModel)]="userProvidedData.sugar" (ngModelChange)="numberTextChanged(value)" placeholder="0" ></ion-input>
+  
+  <ion-item>
+    <button ion-item (click)="closeModal()">
+      Confirm
+    </button>
+  </ion-item>
 </ion-content>
