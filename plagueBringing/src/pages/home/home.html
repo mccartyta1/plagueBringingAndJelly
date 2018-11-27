@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Notes</ion-title>
+    <ion-title>My Food Log</ion-title>
     <ion-buttons left>
         <button ion-button icon-only menuToggle><ion-icon name="menu"></ion-icon></button>
     </ion-buttons>
@@ -40,14 +40,36 @@
       </ion-list>
     </ion-content>
   </ion-menu>
+
+  <ion-footer>
+    <ion-title>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>Goals:</ion-item>
+          </ion-col>
+          <ion-col  style="padding:0;"*ngFor="let goal of getArrayOfGoals()">
+            <ion-item style="margin-right:0px;max-height:50%;max-width:50%">
+            <img *ngIf="goal" style="height:35px;width:35px" src="assets/imgs/checkmark.jpg" alt="your image">
+            <img *ngIf="!goal" style="max-height:100%;max-width:100%" src="assets/imgs/redx.png" alt="your image">
+            </ion-item>
+          </ion-col>
+        </ion-row>
+        <ion-row wrap>
+          <ion-col>
+            <ion-item>Restrictions:</ion-item>
+            </ion-col>
+          <ion-col  *ngFor="let goal of getArrayOfRestrictions()">
+            <ion-item style="margin-right:0px;max-height:50%;max-width:50%">
+            <img *ngIf="goal" style="height:40px;width:40px" src="assets/imgs/checkmark.jpg" alt="your image">
+            <img *ngIf="!goal" style="height:40px;width:40px" src="assets/imgs/redx.png" alt="your image">
+          </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-item left>Total Calories Today: {{caloriesForDay()}}</ion-item>
+    </ion-title>
+  </ion-footer>
+
 </ion-content>
 <ion-nav #mycontent [root]="rootPage"></ion-nav>
-
-<ion-footer>
-  <ion-toolbar>
-    <ion-title>
-      <ion-item left>Calories: {{caloriesForDay()}}</ion-item>
-      <ion-item right>Goals: {{metGoals()}} / {{getTotalGoals()}} - Restrictions: {{metRestrictions()}} / {{getTotalRestrictions()}} </ion-item>
-    </ion-title>
-  </ion-toolbar>
-</ion-footer>

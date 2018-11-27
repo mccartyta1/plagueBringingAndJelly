@@ -1,20 +1,27 @@
 <ion-header>
-    <ion-title>Add Goal</ion-title>
+  <ion-title style="padding-top:20px">Add Goal</ion-title>
 </ion-header>
 
 <ion-content>
-  <ion-select [(ngModel)]="type" (ngModelChange)="optionsFn(type)">
+  <ion-item>
+    <ion-label color="primary">Goal Type </ion-label>
+    <ion-select [(ngModel)]="type" [placeholder]="Calories" (ngModelChange)="optionsFn(type)">
     <ion-option value=0>Calories</ion-option>
     <ion-option value=1>Protein</ion-option>
     <ion-option value=2>Fat</ion-option>
     <ion-option value=3>Carbs</ion-option>
     <ion-option value=4>Sugar</ion-option>
   </ion-select>
+  </ion-item>
   <ion-item>
-  <ion-label color="primary">Goal Number</ion-label>
-  <ion-input [(ngModel)]="value" (ngModelChange)="numberTextChanged(value)" placeholder="42"></ion-input>
-</ion-item>
-        <button ion-item (click)="closeModal()">
-          Confirm
-        </button>
+    <ion-label color="primary">Goal Number</ion-label>
+    <ion-input [(ngModel)]="value" (ngModelChange)="numberTextChanged(value)" placeholder="42">
+    </ion-input>
+  </ion-item>
+  <button ion-item (click)="closeModal()">
+    Confirm
+  </button>
+  <button ion-item (click)="cancel()">
+    Cancel
+  </button>
 </ion-content>
