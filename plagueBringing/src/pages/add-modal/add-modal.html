@@ -1,6 +1,17 @@
 <ion-header>
-  <ion-title style="padding-top:20px">Add Goal</ion-title>
+  <ion-toolbar>
+    <ion-title>
+      Add Goal
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
+
+
 
 <ion-content>
   <ion-item>
@@ -18,10 +29,7 @@
     <ion-input [(ngModel)]="value" (ngModelChange)="numberTextChanged(value)" placeholder="42">
     </ion-input>
   </ion-item>
-  <button ion-item (click)="closeModal()">
+  <button ion-item (click)="confirm()">
     Confirm
-  </button>
-  <button ion-item (click)="cancel()">
-    Cancel
   </button>
 </ion-content>

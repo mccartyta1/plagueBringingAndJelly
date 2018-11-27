@@ -4,13 +4,21 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>Add Food</ion-title>
-  </ion-navbar>
-
+  <ion-toolbar>
+    <ion-title>
+      Add Food
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
+
+
 <ion-content style="margin:10px">
   <ion-item>
     <ion-label color="primary">Food Name</ion-label>
@@ -43,11 +51,8 @@
   </ion-item>
 
   <ion-item>
-    <button ion-item (click)="closeModal()">
+    <button ion-item (click)="confirm()">
       Confirm
-    </button>
-    <button ion-item (click)="cancel()">
-      Cancel
     </button>
   </ion-item>
 </ion-content>

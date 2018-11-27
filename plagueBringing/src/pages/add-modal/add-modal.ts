@@ -25,7 +25,7 @@ export class AddModalPage {
     console.log('ionViewDidLoad AddModalPage');
   }
 
-  closeModal() {
+  confirm() {
     this.viewCtrl.dismiss(this.userProvidedData);
   }
 

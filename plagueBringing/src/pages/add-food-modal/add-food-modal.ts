@@ -34,7 +34,7 @@ export class AddFoodModalPage {
     console.log('ionViewDidLoad AddFoodModalPage');
   }
 
-  closeModal() {
+  confirm() {
     if (!(this.userProvidedData.protein > 0)) { this.userProvidedData.protein = 0; }
     if (!(this.userProvidedData.fat > 0)) { this.userProvidedData.fat = 0; }
     if (!(this.userProvidedData.carbs > 0)) { this.userProvidedData.carbs = 0; }

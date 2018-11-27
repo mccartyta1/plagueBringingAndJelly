@@ -13,11 +13,30 @@
 
 
 <ion-content>
-
     <ion-list>
-        <ion-item *ngFor="let grocery of groceries">
-        {{getFoodDisplayForFood(grocery)}}
-        </ion-item>
+        <div *ngFor="let grocery of groceries">
+          <ion-item (click)="toggleGrocery(grocery)" ng-class="{active: isGroceryShown(grocery)}" >
+              <ion-icon right *ngIf="!isGroceryShown(grocery)" name="arrow-dropright"></ion-icon>
+              <ion-icon right *ngIf="isGroceryShown(grocery)" name="arrow-dropdown"></ion-icon>
+            &nbsp;
+            {{getFoodDisplayForFood(grocery)}}
+          </ion-item>
+          <ion-item text-left padding:0 *ngIf="isGroceryShown(grocery)">
+          {{showCalories(grocery)}}
+          </ion-item>
+          <ion-item text-left *ngIf="isGroceryShown(grocery)">
+            {{showProtein(grocery)}}
+          </ion-item>
+          <ion-item text-left *ngIf="isGroceryShown(grocery)">
+            {{showFat(grocery)}}
+          </ion-item>
+          <ion-item text-left *ngIf="isGroceryShown(grocery)">
+            {{showCarbs(grocery)}}
+          </ion-item>
+          <ion-item text-left *ngIf="isGroceryShown(grocery)">
+            {{showSugar(grocery)}}
+          </ion-item>
+        </div>
     </ion-list>
 
     <ion-menu [content]="mycontent">
@@ -34,6 +53,12 @@
         <button ion-item (click)="addRestriction()">
           Add Restriction
         </button>
+        <button ion-item (click)="deleteData()">
+          Delete Data
+        </button>
+        <button ion-item (click)="scheduleImmediateNotification()">
+          Schedule Notification
+        </button>
         <button ion-item menuToggle>
           Close Menu
         </button>
@@ -48,10 +73,10 @@
           <ion-col>
             <ion-item>Goals:</ion-item>
           </ion-col>
-          <ion-col  style="padding:0;"*ngFor="let goal of getArrayOfGoals()">
+          <ion-col  *ngFor="let goal of getArrayOfGoals()">
             <ion-item style="margin-right:0px;max-height:50%;max-width:50%">
-            <img *ngIf="goal" style="height:35px;width:35px" src="assets/imgs/checkmark.jpg" alt="your image">
-            <img *ngIf="!goal" style="max-height:100%;max-width:100%" src="assets/imgs/redx.png" alt="your image">
+              <img *ngIf="goal" style="height:35px;width:35px" src="assets/imgs/checkmark.jpg" alt="your image">
+              <img *ngIf="!goal" style="max-height:100%;max-width:100%" src="assets/imgs/redx.png" alt="your image">
             </ion-item>
           </ion-col>
         </ion-row>
@@ -61,8 +86,8 @@
             </ion-col>
           <ion-col  *ngFor="let goal of getArrayOfRestrictions()">
             <ion-item style="margin-right:0px;max-height:50%;max-width:50%">
-            <img *ngIf="goal" style="height:40px;width:40px" src="assets/imgs/checkmark.jpg" alt="your image">
-            <img *ngIf="!goal" style="height:40px;width:40px" src="assets/imgs/redx.png" alt="your image">
+              <img *ngIf="goal" style="height:40px;width:40px" src="assets/imgs/checkmark.jpg" alt="your image">
+              <img *ngIf="!goal" style="height:40px;width:40px" src="assets/imgs/redx.png" alt="your image">
           </ion-item>
           </ion-col>
         </ion-row>
