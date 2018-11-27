@@ -106,8 +106,7 @@ addFoodModal() {
 
   myModal.onDidDismiss(data => {
     if (data.calories == 0 || data.name == "") { return; };
-
-    var object = <any>{};
+    var object = {name: '', calories: 0, protein: 0, carbs: 0, sugar: 0, fat: 0};
     object.name = data.name;
     object.calories = +data.calories;
     if (data.fat != 0) object.fat = +data.fat;
